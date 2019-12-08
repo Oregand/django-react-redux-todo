@@ -20,8 +20,8 @@ const CustomModal = ({ activeItem, toggle, onSave }) => {
     if (e.target.type === "checkbox") {
       value = e.target.checked;
     }
-    const activeItem = { ...this.state.activeItem, [name]: value };
-    this.setState({ activeItem });
+    const activeItem = { ...activeItem, [name]: value };
+    setActiveItem({ activeItem });
   };
 
   return (
@@ -34,8 +34,8 @@ const CustomModal = ({ activeItem, toggle, onSave }) => {
             <Input
               type="text"
               name="title"
-              value={this.state.activeItem.title}
-              onChange={this.handleChange}
+              value={activeItem.title}
+              onChange={e => handleChange(e)}
               placeholder="Enter Todo Title"
             />
           </FormGroup>
@@ -44,8 +44,8 @@ const CustomModal = ({ activeItem, toggle, onSave }) => {
             <Input
               type="text"
               name="description"
-              value={this.state.activeItem.description}
-              onChange={this.handleChange}
+              value={activeItem.description}
+              onChange={e => handleChange(e)}
               placeholder="Enter Todo description"
             />
           </FormGroup>
@@ -54,8 +54,8 @@ const CustomModal = ({ activeItem, toggle, onSave }) => {
               <Input
                 type="checkbox"
                 name="completed"
-                checked={this.state.activeItem.completed}
-                onChange={this.handleChange}
+                checked={activeItem.completed}
+                onChange={e => handleChange(e)}
               />
               Completed
             </Label>
@@ -63,7 +63,7 @@ const CustomModal = ({ activeItem, toggle, onSave }) => {
         </Form>
       </ModalBody>
       <ModalFooter>
-        <Button color="success" onClick={() => onSave(this.state.activeItem)}>
+        <Button color="success" onClick={() => onSave(activeItem)}>
           Save
         </Button>
       </ModalFooter>
