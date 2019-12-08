@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
+
+const Modal = lazy(() => import("./components/Modal"));
 
 const App = () => {
-  const [viewCompleted, setViewCompleted] = useState(false)
-  const [todoList, setTodoList] = useState([
-    {
-      id: 1,
-      title: "Go to Market",
-      description: "Buy ingredients to prepare dinner",
-      completed: true
-    },
-    {
-      id: 2,
-      title: "Study",
-      description: "Read Algebra and History textbook for upcoming test",
-      completed: false
-    },
-    {
-      id: 3,
-      title: "Sally's books",
-      description: "Go to library to rent sally's books",
-      completed: true
-    },
-    {
-      id: 4,
-      title: "Article",
-      description: "Write article on how to use django with react",
-      completed: false
-    }
-  ])
+  const [viewCompleted, setViewCompleted] = useState(false);
+  const [todoList, setTodoList] = useState([]);
+  const [activeItem, setActiveItem] = useState({
+    title: "",
+    description: "",
+    completed: false
+  });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/todos/")
+      .then(res => setTodoList(res.data))
+      .catch(err => console.log(err));
+  }, []);
 
   return (
     <main className="content">
@@ -76,8 +65,17 @@ const App = () => {
           </div>
         </div>
       </div>
+      {modal && (
+        <Suspense fallback={<div />}>
+          <Modal
+            activeItem={activeItem}
+            toggle={toggle}
+            onSave={handleSubmit}
+          />
+        </Suspense>
+      )}
     </main>
   );
-}
+};
 
 export default App;
